@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 
 # Load data
-@st.cache
+@st.cache_data
 def load_data():
     data = pd.read_csv('loan_data_set.csv')
 
