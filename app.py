@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report, accuracy_score
 # Load data
 @st.cache
 def load_data():
-    data = pd.read_csv('/content/loan_data_set.csv')
+    data = pd.read_csv('loan_data_set.csv')
 
     # Data cleaning and preprocessing steps
     if 'Loan_ID' in data.columns:
