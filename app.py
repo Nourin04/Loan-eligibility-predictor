@@ -56,11 +56,27 @@ accuracy = accuracy_score(y_test, y_pred)
 
 # Streamlit UI
 st.title("Loan Eligibility Predictor")
-st.write("### Model Accuracy")
-st.write(f"Accuracy: {accuracy:.2f}")
+
+# Project Details
+st.markdown("""
+### Project Overview:
+This project is a Loan Eligibility Predictor built using machine learning. The goal of the application is to predict whether a person is eligible for a loan based on various factors such as income, credit history, and loan details.
+
+### How It Works:
+- **Input**: The user is prompted to enter their personal information, including details like gender, marital status, income, and credit history.
+- **Model**: The model used in this app is a **Random Forest Classifier**, which is trained on historical loan data. The classifier is capable of predicting loan eligibility based on the input data.
+- **Output**: After entering the details, the app predicts whether the loan will be approved or denied.
+
+### Objective:
+The main objective of this project is to provide a tool for users to check their loan eligibility and to demonstrate the application of machine learning in the financial sector.
+""")
 
 # Add a separator for clean sectioning
 st.markdown("---")
+
+# Model Accuracy
+st.write("### Model Accuracy")
+st.write(f"Accuracy: {accuracy:.2f}")
 
 # User input form for prediction
 def user_input_form():
