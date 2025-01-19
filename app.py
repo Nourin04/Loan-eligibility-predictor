@@ -97,15 +97,13 @@ if st.button("Predict Loan Eligibility"):
     # Convert user input into the right format
     input_df = pd.DataFrame([user_input])
 
-   # Encode categorical variables
- for col, le in label_encoders.items():
-    if col in input_df.columns:
-        # Check if the label exists, else apply 'ignore' to handle unseen labels
-        if input_df[col].iloc[0] not in le.classes_:
-            input_df[col] = le.transform([le.classes_[0]])  # Use a default class, or handle missing
-        else:
-            input_df[col] = le.transform(input_df[col])
-
+    # Encode categorical variables
+    for col, le in label_encoders.items():
+        if col in input_df.columns:
+            if input_df[col].iloc[0] not in le.classes_:
+                input_df[col] = le.transform([le.classes_[0]])  # Use a default class, or handle missing
+            else:
+                input_df[col] = le.transform(input_df[col])
 
     # Combine incomes for Total_Income feature
     input_df['Total_Income'] = input_df['ApplicantIncome'] + input_df['CoapplicantIncome']
@@ -124,4 +122,3 @@ if st.button("Predict Loan Eligibility"):
         st.success("Loan Approved")
     else:
         st.error("Loan Denied")
-
