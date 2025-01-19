@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, accuracy_score
+from sklearn.metrics import accuracy_score
 
 # Load data
 @st.cache_data
@@ -53,27 +53,29 @@ model.fit(X_train, y_train)
 # Model evaluation
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
-classification_rep = classification_report(y_test, y_pred)
 
 # Streamlit UI
 st.title("Loan Eligibility Predictor")
 st.write("### Model Accuracy")
 st.write(f"Accuracy: {accuracy:.2f}")
-st.text(f"Classification Report:\n{classification_rep}")
+
+# Add a separator for clean sectioning
+st.markdown("---")
 
 # User input form for prediction
 def user_input_form():
-    gender = st.selectbox("Gender", ["Male", "Female"])
-    married = st.selectbox("Marital Status", ["Married", "Not Married"])
-    dependents = st.selectbox("Dependents", [0, 1, 2, 3])
-    education = st.selectbox("Education", ["Graduate", "Not Graduate"])
-    self_employed = st.selectbox("Self Employed", ["Yes", "No"])
-    applicant_income = st.number_input("Applicant Income", min_value=0)
-    coapplicant_income = st.number_input("Coapplicant Income", min_value=0)
-    loan_amount = st.number_input("Loan Amount", min_value=0)
-    loan_amount_term = st.number_input("Loan Amount Term", min_value=0)
-    credit_history = st.selectbox("Credit History", [1.0, 0.0])
-    property_area = st.selectbox("Property Area", ["Urban", "Semiurban", "Rural"])
+    st.sidebar.header("Enter Loan Applicant Details")
+    gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
+    married = st.sidebar.selectbox("Marital Status", ["Married", "Not Married"])
+    dependents = st.sidebar.selectbox("Dependents", [0, 1, 2, 3])
+    education = st.sidebar.selectbox("Education", ["Graduate", "Not Graduate"])
+    self_employed = st.sidebar.selectbox("Self Employed", ["Yes", "No"])
+    applicant_income = st.sidebar.number_input("Applicant Income", min_value=0)
+    coapplicant_income = st.sidebar.number_input("Coapplicant Income", min_value=0)
+    loan_amount = st.sidebar.number_input("Loan Amount", min_value=0)
+    loan_amount_term = st.sidebar.number_input("Loan Amount Term", min_value=0)
+    credit_history = st.sidebar.selectbox("Credit History", [1.0, 0.0])
+    property_area = st.sidebar.selectbox("Property Area", ["Urban", "Semiurban", "Rural"])
 
     user_input = {
         "Gender": gender,
@@ -93,7 +95,7 @@ def user_input_form():
 
 # Display form and make prediction
 user_input = user_input_form()
-if st.button("Predict Loan Eligibility"):
+if st.sidebar.button("Predict Loan Eligibility"):
     # Convert user input into the right format
     input_df = pd.DataFrame([user_input])
 
@@ -118,7 +120,9 @@ if st.button("Predict Loan Eligibility"):
 
     # Make prediction
     prediction = model.predict(input_df)
+    
+    # Display loan status with an icon
     if prediction[0] == 1:
-        st.success("Loan Approved")
+        st.success("✅ Loan Approved")
     else:
-        st.error("Loan Denied")
+        st.error("❌ Loan Denied")
