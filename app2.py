@@ -80,7 +80,7 @@ def user_input_form():
     st.sidebar.header("Enter Loan Applicant Details")
     gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
     married = st.sidebar.selectbox("Marital Status", ["Married", "Not Married"])
-    dependents = st.sidebar.selectbox("Dependents", [0, 1, 2, 3])
+    dependents = st.sidebar.selectbox("Dependents", [0, 1, 2, 3+])
     education = st.sidebar.selectbox("Education", ["Graduate", "Not Graduate"])
     self_employed = st.sidebar.selectbox("Self Employed", ["Yes", "No"])
     applicant_income = st.sidebar.number_input("Applicant Income", min_value=0)
