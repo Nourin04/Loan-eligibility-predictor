@@ -6,31 +6,38 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
-# Load data
-@st.cache_data
+# Load and preprocess the data
+@st.cache_data  # Caches the data loading function for better performance
 def load_data():
+    # Load the dataset
     data = pd.read_csv('loan_data_set.csv')
 
-    # Data cleaning and preprocessing steps
+    # Drop the 'Loan_ID' column if it exists (not relevant for prediction)
     if 'Loan_ID' in data.columns:
         data = data.drop('Loan_ID', axis=1)
 
+    # Define columns for categorical and numerical data
     categorical_cols = ['Gender', 'Married', 'Dependents', 'Self_Employed', 'Credit_History']
     numerical_cols = ['LoanAmount', 'Loan_Amount_Term']
-    for col in categorical_cols:
-        data[col] = data[col].fillna(data[col].mode()[0])
-    for col in numerical_cols:
-        data[col] = data[col].fillna(data[col].median())
 
+    # Handle missing values for categorical and numerical columns
+    for col in categorical_cols:
+        data[col] = data[col].fillna(data[col].mode()[0])  # Fill with mode
+    for col in numerical_cols:
+        data[col] = data[col].fillna(data[col].median())  # Fill with median
+
+    # Encode categorical variables using Label Encoding
     label_encoders = {}
     for col in data.select_dtypes(include='object').columns:
         le = LabelEncoder()
         data[col] = le.fit_transform(data[col])
         label_encoders[col] = le
 
+    # Create a new feature 'Total_Income' by combining Applicant and Coapplicant Income
     data['Total_Income'] = data['ApplicantIncome'] + data['CoapplicantIncome']
     data = data.drop(['ApplicantIncome', 'CoapplicantIncome'], axis=1)
 
+    # Standardize numerical features using StandardScaler
     scaler = StandardScaler()
     data[['LoanAmount', 'Loan_Amount_Term', 'Total_Income']] = scaler.fit_transform(
         data[['LoanAmount', 'Loan_Amount_Term', 'Total_Income']]
@@ -39,46 +46,36 @@ def load_data():
     return data, label_encoders, scaler
 
 
-# Load the data
+# Load the data and preprocess it
 data, label_encoders, scaler = load_data()
 
+# Split data into features (X) and target (y)
 X = data.drop('Loan_Status', axis=1)
 y = data['Loan_Status']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Build the Random Forest model
+# Train a Random Forest Classifier
 model = RandomForestClassifier(random_state=42)
 model.fit(X_train, y_train)
 
-# Model evaluation
+# Evaluate the model
 y_pred = model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 
-# Streamlit UI
+# Streamlit App UI
 st.title("Loan Eligibility Predictor")
 
-# Project Details
+# Project Overview Section
 st.markdown("""
 ### Project Overview:
-This project is a Loan Eligibility Predictor built using machine learning. The goal of the application is to predict whether a person is eligible for a loan based on various factors such as income, credit history, and loan details.
-
-### How It Works:
-- **Input**: The user is prompted to enter their personal information, including details like gender, marital status, income, and credit history.
-- **Model**: The model used in this app is a **Random Forest Classifier**, which is trained on historical loan data. The classifier is capable of predicting loan eligibility based on the input data.
-- **Output**: After entering the details, the app predicts whether the loan will be approved or denied.
-
-### Objective:
-The main objective of this project is to provide a tool for users to check their loan eligibility and to demonstrate the application of machine learning in the financial sector.
+This project predicts loan eligibility using machine learning. Users input their personal and financial details, and the app predicts whether their loan will be approved or denied.
 """)
 
-# Add a separator for clean sectioning
-st.markdown("---")
-
-# Model Accuracy
+# Model Accuracy Section
 st.write("### Model Accuracy")
 st.write(f"Accuracy: {accuracy:.2f}")
 
-# User input form for prediction
+# Form for user input
 def user_input_form():
     st.sidebar.header("Enter Loan Applicant Details")
     gender = st.sidebar.selectbox("Gender", ["Male", "Female"])
@@ -93,6 +90,7 @@ def user_input_form():
     credit_history = st.sidebar.selectbox("Credit History", [1.0, 0.0])
     property_area = st.sidebar.selectbox("Property Area", ["Urban", "Semiurban", "Rural"])
 
+    # Collect all user inputs into a dictionary
     user_input = {
         "Gender": gender,
         "Married": married,
@@ -109,62 +107,48 @@ def user_input_form():
 
     return user_input
 
-# Chatbot function to simulate responses
+# Display chatbot for quick assistance
 def chatbot_conversation():
     user_input = st.text_input("Chat with us! Ask a question:", "")
-    
+
     if user_input:
-        user_input_lower = user_input.lower()
-
-        # Simple rule-based chatbot responses
-        if "loan eligibility" in user_input_lower:
-            st.chat_message("bot").markdown("**Bot:** You can check your eligibility by providing your details above!")
-        elif "apply for loan" in user_input_lower:
-            st.chat_message("bot").markdown("**Bot:** Please fill out the form above to apply for a loan.")
-        elif "loan amount" in user_input_lower:
-            st.chat_message("bot").markdown("**Bot:** You can enter your desired loan amount in the form.")
-        elif "criteria" in user_input_lower:
-            st.chat_message("bot").markdown("**Bot:** The eligibility depends on your income, credit history, and other factors.")
+        # Rule-based chatbot responses
+        if "loan eligibility" in user_input.lower():
+            st.chat_message("bot").markdown("**Bot:** Provide your details above to check eligibility.")
+        elif "apply for loan" in user_input.lower():
+            st.chat_message("bot").markdown("**Bot:** Fill out the form above to apply.")
         else:
-            st.chat_message("bot").markdown("**Bot:** I'm sorry, I didn't understand. Please ask about loan eligibility, application, or criteria.")
-    
-    # Display the chat messages
-    if st.chat_message:
-        st.chat_message("user").markdown(f"**You:** {user_input}")
+            st.chat_message("bot").markdown("**Bot:** Please ask about eligibility or loan criteria.")
 
-# Display the chatbot conversation
 st.sidebar.subheader("Loan Eligibility Chatbot")
 chatbot_conversation()
 
-# Display form and make prediction
+# Get user input and make predictions
 user_input = user_input_form()
 if st.sidebar.button("Predict Loan Eligibility"):
-    # Convert user input into the right format
     input_df = pd.DataFrame([user_input])
 
-    # Encode categorical variables
+    # Encode user input and preprocess it
     for col, le in label_encoders.items():
         if col in input_df.columns:
             if input_df[col].iloc[0] not in le.classes_:
-                input_df[col] = le.transform([le.classes_[0]])  # Use a default class, or handle missing
+                input_df[col] = le.transform([le.classes_[0]])  # Handle unseen data
             else:
                 input_df[col] = le.transform(input_df[col])
 
-    # Combine incomes for Total_Income feature
     input_df['Total_Income'] = input_df['ApplicantIncome'] + input_df['CoapplicantIncome']
     input_df = input_df.drop(['ApplicantIncome', 'CoapplicantIncome'], axis=1)
 
-    # Normalize numerical features
     numerical_features = ['LoanAmount', 'Loan_Amount_Term', 'Total_Income']
     input_df[numerical_features] = scaler.transform(input_df[numerical_features])
 
-    # Ensure all features are present in the input
+    # Match input with model features
     input_df = input_df.reindex(columns=X.columns, fill_value=0)
 
     # Make prediction
     prediction = model.predict(input_df)
-    
-    # Display loan status with an icon
+
+    # Display prediction result
     if prediction[0] == 1:
         st.success("✅ Loan Approved")
     else:
