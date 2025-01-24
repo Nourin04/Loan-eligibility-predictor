@@ -100,7 +100,7 @@ The dataset for this project contains loan applicant information, such as:
 ---
 
 ## Streamlit Link
-[Loan Eligibility Predictor:](https://63vg5ogruyh9xspmayv6fj.streamlit.app/)
+[Loan Eligibility Predictor](https://63vg5ogruyh9xspmayv6fj.streamlit.app/)
 
 
 ---
