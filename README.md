@@ -101,7 +101,7 @@ You can replace the file path with your own dataset if needed.
 ---
 
 ## Streamlit Link
-[Loan Eligibility Predictor:]([(https://63vg5ogruyh9xspmayv6fj.streamlit.app/])
+Loan Eligibility Predictor:([(https://63vg5ogruyh9xspmayv6fj.streamlit.app/])
 
 
 ---
