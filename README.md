@@ -101,14 +101,9 @@ You can replace the file path with your own dataset if needed.
 ---
 
 ## Streamlit Link
-[Loan Eligibility Predictor]([https://your-deployment-link](https://63vg5ogruyh9xspmayv6fj.streamlit.app/
-))  
+[Loan Eligibility Predictor]([(https://63vg5ogruyh9xspmayv6fj.streamlit.app/]
+)
 
-
-### Deploying to Streamlit Cloud
-1. Push your code to a GitHub repository.  
-2. Go to [Streamlit Cloud](https://streamlit.io/cloud).  
-3. Connect your repository and deploy the app.
 
 ---
 
