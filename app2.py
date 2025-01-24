@@ -9,8 +9,8 @@ from imblearn.over_sampling import SMOTE
 from xgboost import XGBClassifier
 
 # Ensure specific versions of libraries are installed
-!pip uninstall -y scikit-learn
-!pip install scikit-learn==1.5.2
+pip uninstall -y scikit-learn
+pip install scikit-learn==1.5.2
 
 import xgboost
 import sklearn
