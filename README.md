@@ -107,17 +107,16 @@ Loan Eligibility Predictor:([(https://63vg5ogruyh9xspmayv6fj.streamlit.app/])
 ---
 
 ## Future Enhancements
-- Add more machine learning models for comparison.
+- Increase the accuracy
 - Enhance the UI for a better user experience.
-- Include explainability features like **SHAP** for model interpretability.
 - Expand dataset for better generalization.  
 
 ---
 
 ## Contact
 For queries or collaborations, please feel free to reach out:  
-**Your Name:** Noureen  
-**Email:** your-email@example.com  
+**Your Name:** Noureen AC 
+**Email:** nourinnn1823@gmail.com  
 
 
 --- 
