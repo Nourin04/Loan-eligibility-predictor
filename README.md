@@ -51,7 +51,7 @@ This Loan Eligibility Predictor application aims to demonstrate the practical ap
 The dataset for this project contains loan applicant information, such as:
 - Gender, Marital Status, Dependents, Education, Employment Status, Income, Credit History, and Loan Details.
 
-### Sample Dataset Columns
+### Dataset Columns
 - `Gender`  
 - `Married`  
 - `Dependents`  
@@ -64,8 +64,7 @@ The dataset for this project contains loan applicant information, such as:
 - `Credit_History`  
 - `Property_Area`  
 - `Loan_Status`  
-
-You can replace the file path with your own dataset if needed.  
+ 
 
 ---
 
@@ -94,14 +93,14 @@ You can replace the file path with your own dataset if needed.
 ---
 
 ## Usage
-1. Open the Streamlit app using the link displayed in your terminal after running `streamlit run app.py`.  
+1. Open the Streamlit app using the link displayed.  
 2. Use the sidebar to input loan applicant details, including income, loan amount, and credit history.  
 3. Click the **"Predict Loan Eligibility"** button to view the prediction.  
 
 ---
 
 ## Streamlit Link
-Loan Eligibility Predictor:([(https://63vg5ogruyh9xspmayv6fj.streamlit.app/])
+[Loan Eligibility Predictor:](https://63vg5ogruyh9xspmayv6fj.streamlit.app/)
 
 
 ---
