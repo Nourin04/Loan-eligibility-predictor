@@ -77,7 +77,7 @@ The dataset for this project contains loan applicant information, such as:
 1. Clone this repository:  
    ```bash
    git clone https://github.com/Nourin04/Loan-eligibility-predictor.git
-   cd loan-eligibility-predictor
+   cd Loan-eligibility-predictor
    ```
 
 2. Install the required packages:  
